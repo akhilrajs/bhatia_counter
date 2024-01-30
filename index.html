@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscription Countdown</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #ecf0f1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #a93226; /* Faded red */
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .section-heading {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-top: 20px;
+      color: #fff;
+    }
+
+    .countdown-container {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .countdown-item {
+      display: inline-block;
+      margin: 0 10px;
+      font-size: 2em;
+      color: #fff;
+      background-color: #a93226; /* Faded red */
+      border-radius: 10px;
+      padding: 15px;
+    }
+
+    .countdown-label {
+      font-size: 1.2em;
+      color: #fff;
+    }
+
+    #expiryDate {
+      font-size: 1.2em;
+      margin-top: 20px;
+      background-color: #a93226; /* Faded red */
+      padding: 15px;
+      border-radius: 10px;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="section-heading">Countdown Till January 27, 2025:</div>
+    <div class="countdown-container">
+      <div class="countdown-item" id="days">00</div>
+      <div class="countdown-item" id="hours">00</div>
+      <div class="countdown-item" id="minutes">00</div>
+      <div class="countdown-item" id="seconds">00</div>
+      <div class="countdown-label">Days | Hours | Minutes | Seconds</div>
+    </div>
+
+    <div class="section-heading">Time Left if Studying 3 Hours/Day:</div>
+    <div class="countdown-container">
+      <div class="countdown-item" id="studyHours">00</div>
+      <div class="countdown-item" id="studyMinutes">00</div>
+      <div class="countdown-item" id="studySeconds">00</div>
+      <div class="countdown-label">Hours | Minutes | Seconds</div>
+    </div>
+
+    <div class="section-heading">Subscription Expiry Date:</div>
+    <div class="countdown-container">
+      <div id="expiryDate">27 Jan 2025</div>
+    </div>
+
+    <div class="section-heading">Countdown Till July 1, 2024:</div>
+    <div class="countdown-container">
+      <div class="countdown-item" id="daysJuly1">00</div>
+      <div class="countdown-item" id="hoursJuly1">00</div>
+      <div class="countdown-item" id="minutesJuly1">00</div>
+      <div class="countdown-item" id="secondsJuly1">00</div>
+      <div class="countdown-label">Days | Hours | Minutes | Seconds</div>
+    </div>
+  </div>
+
+  <script>
+    // Set your subscription, expiry, and July 1, 2024 dates
+    const subscriptionDate = new Date('2024-01-27');
+    const expiryDate = new Date('2025-01-27');
+    const july1Date = new Date('2024-07-01');
+
+    // Function to update the countdown
+    function updateCountdown() {
+      const currentDate = new Date();
+      const timeDifference = expiryDate - currentDate;
+
+      const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+      const studyTimeDifference = timeDifference + (3 * 60 * 60 * 1000 * days);
+      const studyHours = Math.floor(studyTimeDifference / (1000 * 60 * 60));
+      const studyMinutes = Math.floor((studyTimeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      const studySeconds = Math.floor((studyTimeDifference % (1000 * 60)) / 1000);
+
+      const july1TimeDifference = july1Date - currentDate;
+      const daysJuly1 = Math.floor(july1TimeDifference / (1000 * 60 * 60 * 24));
+      const hoursJuly1 = Math.floor((july1TimeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutesJuly1 = Math.floor((july1TimeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      const secondsJuly1 = Math.floor((july1TimeDifference % (1000 * 60)) / 1000);
+
+      document.getElementById('days').textContent = padNumber(days);
+      document.getElementById('hours').textContent = padNumber(hours);
+      document.getElementById('minutes').textContent = padNumber(minutes);
+      document.getElementById('seconds').textContent = padNumber(seconds);
+
+      document.getElementById('studyHours').textContent = padNumber(studyHours);
+      document.getElementById('studyMinutes').textContent = padNumber(studyMinutes);
+      document.getElementById('studySeconds').textContent = padNumber(studySeconds);
+
+      document.getElementById('daysJuly1').textContent = padNumber(daysJuly1);
+      document.getElementById('hoursJuly1').textContent = padNumber(hoursJuly1);
+      document.getElementById('minutesJuly1').textContent = padNumber(minutesJuly1);
+      document.getElementById('secondsJuly1').textContent = padNumber(secondsJuly1);
+    }
+
+    // Function to pad numbers with leading zeros
+    function padNumber(number) {
+      return number < 10 ? `0${number}` : number;
+    }
+
+    // Function to update the expiry date
+    function updateExpiryDate() {
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      const formattedExpiryDate = expiryDate.toLocaleDateString('en-US', options);
+      document.getElementById('expiryDate').textContent = formattedExpiryDate;
+    }
+
+    // Initial update
+    updateCountdown();
+    updateExpiryDate();
+
+    // Update every second
+    setInterval(() => {
+      updateCountdown();
+    }, 1000);
+  </script>
+
+</body>
+</html>
